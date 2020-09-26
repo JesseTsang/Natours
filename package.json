@@ -1,0 +1,31 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "A travel tour web app built using Express.Js, MongoDB, Mongoose. It is intended as a learning project for Node.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JesseTsang/Natours.git"
+  },
+  "keywords": [
+    "Natours",
+    "Node.js",
+    "Express.js",
+    "MongoDB",
+    "Mongoose",
+    "personal",
+    "project"
+  ],
+  "author": "Jesse Tsang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JesseTsang/Natours/issues"
+  },
+  "homepage": "https://github.com/JesseTsang/Natours#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
