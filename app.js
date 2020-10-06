@@ -1,21 +1,22 @@
+// Core modules
+const fs = require('fs');
+
 // Setup Express
 const express = require('express');
 const app = express();
 
-// Start a server
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
+);
+
+// Routes
+app.get('/api/v1/tours', (req, res) => {
+  res.status(200).json({ status: 'success', data: { tours } });
+});
+
+// Start the server
 const port = 3000;
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
-});
-
-// Routes
-app.get('/', (req, res) => {
-  // .send => string only
-  // .json => return a JSON object
-  res.status(200).json({ message: 'Hello from the server!', app: 'Natours' });
-});
-
-app.post('/', (req, res) => {
-  res.send('You can post to this endpoint ...');
 });
