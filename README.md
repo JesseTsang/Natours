@@ -21,3 +21,7 @@ This is a travel tour web app built using Express.Js, MongoDB, Mongoose. It is i
 - Email notification
 - App deployment using Heroku
 - API testing using Postman
+
+## Postman Test Collection
+
+Import the collection file in /Postman Collection
