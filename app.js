@@ -1,22 +1,21 @@
-// Import Express
+// Setup Express
 const express = require('express');
 const app = express();
 
-// Import 3rd party middleware
-const morgan = require('morgan');
+// Start a server
+const port = 3000;
 
-// Import routers
-const tourRouter = require('./routes/tourRoutes');
-const userRouter = require('./routes/userRoutes');
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
+});
 
-// Middleware declarations
-app.use(morgan('dev'));
-app.use(express.json());
+// Routes
+app.get('/', (req, res) => {
+  // .send => string only
+  // .json => return a JSON object
+  res.status(200).json({ message: 'Hello from the server!', app: 'Natours' });
+});
 
-// Mount the custom router (Using middleware to connect the custom router to the app)
-app.use('/api/v1/tours', tourRouter);
-app.use('/api/v1/users', userRouter);
-
-module.exports = app;
-
-// 63.18
+app.post('/', (req, res) => {
+  res.send('You can post to this endpoint ...');
+});
