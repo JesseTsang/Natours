@@ -58,7 +58,7 @@ exports.checkBody = (req, res, next) => {
   next();
 };
 
-exports.getTourByID = (req, res) => {
+exports.getTour = (req, res) => {
   console.log(req.params);
 
   // convert string to number trick
