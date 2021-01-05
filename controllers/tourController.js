@@ -74,7 +74,7 @@ exports.getTourByID = (req, res) => {
   });
 };
 
-exports.patchTourByID = (req, res) => {
+exports.updateTour = (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
