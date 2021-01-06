@@ -32,8 +32,6 @@ exports.addTour = (req, res) => {
 };
 
 exports.checkID = (req, res, next, val) => {
-  console.log(`Tour id is: ${val}`);
-
   if (val > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -45,9 +43,6 @@ exports.checkID = (req, res, next, val) => {
 };
 
 exports.checkBody = (req, res, next) => {
-  // var body = JSON.stringify(req.body);
-  // console.log(`POST body: ${body}`);
-
   if (!req.body.name || !req.body.price) {
     return res.status(404).json({
       status: 'fail',
