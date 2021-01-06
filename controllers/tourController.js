@@ -16,7 +16,9 @@ exports.addTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
 
   // merge 2 objects together
-  const newTour = Object.assign({ id: newId }, req.body);
+  // const newTour = Object.assign({ id: newId }, req.body);
+  // eslint-disable-next-line node/no-unsupported-features/es-syntax
+  const newTour = { id: newId, ...req.body };
 
   // Add the new tour to the tours object
   tours.push(newTour);
