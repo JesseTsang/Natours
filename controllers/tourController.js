@@ -1,6 +1,7 @@
 const Tour = require('../models/tourModel');
 
 exports.createTour = async (req, res) => {
+  // using async await so we need try catch
   try {
     // Returns a promise
     const newTour = await Tour.create(req.body);
@@ -15,25 +16,28 @@ exports.createTour = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: err,
+      message: 'Invalid data sent!',
     });
   }
 };
 
-exports.getTour = (req, res) => {
-  console.log(req.params);
+exports.getTour = async (req, res) => {
+  try {
+    //Same as Tour.findOne({ _id: req.params..id })
+    const tour = await Tour.findById(req.params.id);
 
-  // convert string to number trick
-  // const id = req.params.id * 1;
-
-  // const tour = tours.find((el) => el.id === id);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      // tour,
-    },
-  });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Invalid data sent!',
+    });
+  }
 };
 
 exports.updateTour = (req, res) => {
@@ -54,9 +58,21 @@ exports.deleteTour = (req, res) => {
   });
 };
 
-exports.getAllTours = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    // data: { tours },
-  });
+exports.getAllTours = async (req, res) => {
+  try {
+    const tours = await Tour.find();
+
+    res.status(200).json({
+      status: 'success',
+      results: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data sent!',
+    });
+  }
 };
