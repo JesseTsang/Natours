@@ -97,10 +97,13 @@ exports.getAllTours = async (req, res) => {
     // 1.2 Advanced filtering: gte, gt, lte, lt
     let queryStr = JSON.stringify(queryObject);
     // /g = exact match | /g = happens more than once
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    queryStr = queryStr.replace(
+      /\b(gte|gt|lte|lt|eq)\b/g,
+      (match) => `$${match}`
+    );
     console.log(JSON.parse(queryStr));
 
-    const query = Tour.find(JSON.parse(queryStr));
+    let query = Tour.find(JSON.parse(queryStr));
 
     // {difficulty: 'easy', duration { $gte: 5 }}
 
@@ -111,12 +114,23 @@ exports.getAllTours = async (req, res) => {
     //   .where('difficulty')
     //   .equal('easy');
 
-    // 2. Execute query
+    // 2. Sorting
+    if (req.query.sort) {
+      // to sort secondary field
+      // sort('price ratingsAverage')
+      const sortBy = req.query.sort.split(',').join(' ');
+
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('-createdAt');
+    }
+
+    // 3. Execute query
     // We shouldn't use "await Tour.find(queryObject)" because it will execute the Query (return object) right away
     // and will will not be able to chain further methods like sort() or pagination
     const tours = await query;
 
-    // 3. Send response
+    // 4. Send response
     res.status(200).json({
       status: 'success',
       results: tours.length,
