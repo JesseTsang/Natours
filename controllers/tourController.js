@@ -81,8 +81,42 @@ exports.deleteTour = async (req, res) => {
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    // 1. Build query
+    // This is a trick to create shallow copy of an object in ES6
+    // ... req.query will destructure the query
+    // {} will make it a new object
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const queryObject = { ...req.query };
 
+    // 1.1 Basic filtering
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+
+    // this will remove elements from excludedFields without creating a new object
+    excludedFields.forEach((el) => delete queryObject[el]);
+
+    // 1.2 Advanced filtering: gte, gt, lte, lt
+    let queryStr = JSON.stringify(queryObject);
+    // /g = exact match | /g = happens more than once
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    console.log(JSON.parse(queryStr));
+
+    const query = Tour.find(JSON.parse(queryStr));
+
+    // {difficulty: 'easy', duration { $gte: 5 }}
+
+    // alternative way to use query to filter data
+    // const query = await Tour.find()
+    //   .where('duration')
+    //   .lte(5)
+    //   .where('difficulty')
+    //   .equal('easy');
+
+    // 2. Execute query
+    // We shouldn't use "await Tour.find(queryObject)" because it will execute the Query (return object) right away
+    // and will will not be able to chain further methods like sort() or pagination
+    const tours = await query;
+
+    // 3. Send response
     res.status(200).json({
       status: 'success',
       results: tours.length,
@@ -93,7 +127,7 @@ exports.getAllTours = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: 'Invalid data sent!',
+      message: err,
     });
   }
 };
