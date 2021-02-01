@@ -135,7 +135,20 @@ exports.getAllTours = async (req, res) => {
       query = query.select('-__v');
     }
 
-    // 4. Execute query
+    // 4. Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+    // page=2&limit=10
+    // query.skip(2).limit(10) || page 1: 1-10, page 2: 11-20
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await Tour.countDocuments();
+      if (skip >= numTours) throw new Error('This page does not exist.');
+    }
+
+    // Execute query
     // We shouldn't use "await Tour.find(queryObject)" because it will execute the Query (return object) right away
     // and will will not be able to chain further methods like sort() or pagination
     const tours = await query;
