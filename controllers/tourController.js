@@ -125,7 +125,17 @@ exports.getAllTours = async (req, res) => {
       query = query.sort('-createdAt');
     }
 
-    // 3. Execute query
+    // 3. Field Limiting
+    if (req.query.fields) {
+      // something like 'name duration price'
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields); // projecting
+    } else {
+      // - means 'exclude', '-__v' means everything excluding '__v'
+      query = query.select('-__v');
+    }
+
+    // 4. Execute query
     // We shouldn't use "await Tour.find(queryObject)" because it will execute the Query (return object) right away
     // and will will not be able to chain further methods like sort() or pagination
     const tours = await query;
