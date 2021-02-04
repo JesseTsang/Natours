@@ -21,3 +21,11 @@ This is a travel tour web app built using Express.Js, MongoDB, Mongoose. It is i
 - Email notification
 - App deployment using Heroku
 - API testing using Postman
+
+## How to Run the Project
+
+1. Clean the database using "node dev-data/data/import-dev-data.js --delete"
+2. Seed the database using "node dev-data/data/import-dev-data.js --import"
+3. use npm start (for development environment)
+4. use npm start:prod (for production environment)
+ 

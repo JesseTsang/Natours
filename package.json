@@ -4,7 +4,7 @@
   "description": "A travel tour web app built using Express.Js, MongoDB, Mongoose. It is intended as a learning project for Node.js",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production & nodemon server.js"
   },
   "repository": {
@@ -29,7 +29,10 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "morgan": "^1.10.0"
+    "mongoose": "^5.11.12",
+    "morgan": "^1.10.0",
+    "slugify": "^1.4.6",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "eslint": "^7.17.0",

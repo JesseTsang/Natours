@@ -1,9 +1,23 @@
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+// This must load before app or you will not get loggings
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
-// console.log(process.env);
+const DB = process.env.DATABASE.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
+
+// Will return a promise
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: true,
+  })
+  .then(() => console.log('DB connection successful!'));
 
 // Start the server
 const port = process.env.PORT || 3000;
