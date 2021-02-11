@@ -17,13 +17,19 @@ const userRouter = require('./routes/userRoutes');
 // Middleware declarations
 
 app.use(express.json());
-console.log(__dirname);
 app.use(express.static('public'));
 
 // Mount the custom router (Using middleware to connect the custom router to the app)
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-module.exports = app;
+// Any route reaching this point will be routes that are invalid
+// so we add a catch all route to catch them
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Cannot find ${req.originalUrl} on this server.`,
+  });
+});
 
-// 63.18
+module.exports = app;
